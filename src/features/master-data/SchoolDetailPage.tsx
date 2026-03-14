@@ -44,8 +44,8 @@ export default function SchoolDetailPage() {
 
   // Use Convex real-time queries
   const schoolData = useQuery(convexApi.schools.get, id ? { id: id as any } : "skip");
-  const teachersData = useQuery(convexApi.teachers.list, { 
-    unitKerja: schoolData?.nama,
+  const teachersData = useQuery(convexApi.teachers.listAll, { 
+    schoolId: id,
     token: localStorage.getItem("token") || undefined
   });
 
