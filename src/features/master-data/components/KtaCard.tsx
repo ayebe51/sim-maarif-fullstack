@@ -12,7 +12,7 @@ interface KtaCardProps {
     nama: string;
     nuptk?: string; // Teacher
     nisn?: string; // Student
-    nomorIndukMaarif?: string;
+    nomorIndukPegawai?: string;
     unitKerja?: string; // Teacher
     namaSekolah?: string; // Student
     kelas?: string; // Student
@@ -166,7 +166,7 @@ export default function KtaCard({ data, type, isBatch }: KtaCardProps) {
                         <h1 className={`text-[12px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r ${isTeacher ? 'from-yellow-200 to-yellow-500' : 'from-blue-200 to-cyan-300'} uppercase tracking-widest leading-none mb-0.5 ${isTeacher ? "print-color-yellow" : "print-color-blue"}`}>
                           {isTeacher ? "KARTU TANDA ANGGOTA" : "KARTU IDENTITAS SISWA"}
                         </h1>
-                        <h2 className="text-[8px] font-semibold text-emerald-400 uppercase tracking-widest leading-none print-color-emerald">LP MA'ARIF NU CILACAP</h2>
+                        <h2 className="text-[8px] font-semibold text-emerald-400 uppercase tracking-widest leading-none print-color-emerald">Platform EduSaaS</h2>
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -201,8 +201,8 @@ export default function KtaCard({ data, type, isBatch }: KtaCardProps) {
                     </div>
                     {isTeacher && (
                       <div className="border-b border-white/10 pb-1 flex justify-between">
-                        <label className="text-[7px] text-yellow-500 uppercase tracking-widest mt-0.5 print-color-yellow">NIM (No Induk Ma'arif)</label>
-                        <p className="font-mono font-bold text-[10px] text-emerald-200 tracking-wider print-color-emerald">{data.nomorIndukMaarif || "-"}</p>
+                        <label className="text-[7px] text-yellow-500 uppercase tracking-widest mt-0.5 print-color-yellow">NIM (No Induk EduSaaS)</label>
+                        <p className="font-mono font-bold text-[10px] text-emerald-200 tracking-wider print-color-emerald">{data.nomorIndukPegawai || "-"}</p>
                       </div>
                     )}
                     <div className="border-b border-white/10 pb-1 pt-0.5">
@@ -250,10 +250,10 @@ export default function KtaCard({ data, type, isBatch }: KtaCardProps) {
                     Ketentuan Kartu {isTeacher ? "Anggota" : "Siswa"}
                    </h3>
                    <ul className="text-[7.5px] space-y-1.5 list-none pl-1 text-slate-300">
-                       <li className="flex gap-2"><div className={`w-1 h-1 rounded-full ${isTeacher ? 'bg-emerald-500' : 'bg-blue-400'} mt-1 flex-shrink-0`}></div> Kartu ini adalah identitas resmi anggota LP Ma'arif NU Cilacap.</li>
+                       <li className="flex gap-2"><div className={`w-1 h-1 rounded-full ${isTeacher ? 'bg-emerald-500' : 'bg-blue-400'} mt-1 flex-shrink-0`}></div> Kartu ini adalah identitas resmi anggota Platform EduSaaS.</li>
                        <li className="flex gap-2"><div className={`w-1 h-1 rounded-full ${isTeacher ? 'bg-emerald-500' : 'bg-blue-400'} mt-1 flex-shrink-0`}></div> Wajib dibawa saat mengikuti program/kegiatan resmi {isTeacher ? "organisasi" : "sekolah"}.</li>
-                       <li className="flex gap-2"><div className={`w-1 h-1 rounded-full ${isTeacher ? 'bg-emerald-500' : 'bg-blue-400'} mt-1 flex-shrink-0`}></div> Digunakan dalam sistem absensi digital LP Ma'arif NU Cilacap.</li>
-                       <li className="flex gap-2"><div className={`w-1 h-1 rounded-full ${isTeacher ? 'bg-emerald-500' : 'bg-blue-400'} mt-1 flex-shrink-0`}></div> Jika menemukan kartu ini, harap kembalikan ke kantor LP Ma'arif NU Cilacap.</li>
+                       <li className="flex gap-2"><div className={`w-1 h-1 rounded-full ${isTeacher ? 'bg-emerald-500' : 'bg-blue-400'} mt-1 flex-shrink-0`}></div> Digunakan dalam sistem absensi digital Platform EduSaaS.</li>
+                       <li className="flex gap-2"><div className={`w-1 h-1 rounded-full ${isTeacher ? 'bg-emerald-500' : 'bg-blue-400'} mt-1 flex-shrink-0`}></div> Jika menemukan kartu ini, harap kembalikan ke kantor Platform EduSaaS.</li>
                    </ul>
                 </div>
 
@@ -270,14 +270,14 @@ export default function KtaCard({ data, type, isBatch }: KtaCardProps) {
 
                     {/* Signature Area */}
                     <div className="text-center pr-2">
-                        <p className="text-[7.5px] text-slate-400 mb-1 font-medium">Cilacap, {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric'})}</p>
+                        <p className="text-[7.5px] text-slate-400 mb-1 font-medium">Pusat, {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric'})}</p>
                         <div className="flex flex-col items-center pt-0 relative">
                             <div className="relative flex justify-center items-center h-10 w-24 mx-auto mb-2 mt-1">
                                 <img src="/stempel-maarif-putih.png" alt="Stempel" className="absolute -left-8 -top-5 h-20 w-20 object-contain mix-blend-screen opacity-90" />
                                 <img src="/ttd-ketua-putih.png" alt="Tanda Tangan" className="absolute top-0 h-12 w-auto object-contain z-10 mix-blend-screen" />
                             </div>
                             <p className="text-[10px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-100 to-yellow-400 border-b border-yellow-500/30 pb-0.5 mb-1 px-4 tracking-wide relative z-20">Ali Sodiqin, S.Ag., M.Pd.I.</p>
-                            <p className="text-[6.5px] uppercase tracking-[0.14em] text-emerald-400 font-semibold relative z-20">Ketua LP Ma'arif NU Cilacap</p>
+                            <p className="text-[6.5px] uppercase tracking-[0.14em] text-emerald-400 font-semibold relative z-20">Ketua Platform EduSaaS</p>
                         </div>
                     </div>
                 </div>

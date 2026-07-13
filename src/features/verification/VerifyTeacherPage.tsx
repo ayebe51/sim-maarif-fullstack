@@ -33,7 +33,7 @@ export default function VerifyTeacherPage() {
             </div>
             <CardTitle className="text-2xl text-red-700">Tidak Ditemukan</CardTitle>
             <CardDescription className="text-base mt-2">
-              Data Anggota dengan NUPTK/ID <strong>{nuptk}</strong> tidak terdaftar dalam sistem LP Ma'arif NU Kab. Cilacap.
+              Data Anggota dengan NUPTK/ID <strong>{nuptk}</strong> tidak terdaftar dalam sistem Platform EduSaaS Kab. Pusat.
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-4 flex justify-center">
@@ -56,7 +56,7 @@ export default function VerifyTeacherPage() {
           </div>
           <CardTitle className="text-2xl text-slate-800 tracking-tight">Terverifikasi Resmi</CardTitle>
           <CardDescription className="text-sm mt-1 text-emerald-600 font-medium bg-emerald-50 inline-block px-3 py-1 rounded-full">
-            Anggota Aktif LP Ma'arif NU Cilacap
+            Anggota Aktif Platform EduSaaS
           </CardDescription>
         </CardHeader>
         <CardContent className="bg-slate-50/50 p-6">
@@ -71,8 +71,8 @@ export default function VerifyTeacherPage() {
                        <p className="font-mono text-sm font-medium text-slate-700 bg-white border border-slate-200 px-2 py-1 rounded inline-block">{teacher.nuptk || "-"}</p>
                    </div>
                    <div>
-                       <p className="text-xs text-slate-500 uppercase font-semibold tracking-wider mb-1">NIM Ma'arif</p>
-                       <p className="font-mono text-sm font-medium text-slate-700 bg-white border border-slate-200 px-2 py-1 rounded inline-block">{(teacher as any).nomorIndukMaarif || "-"}</p>
+                       <p className="text-xs text-slate-500 uppercase font-semibold tracking-wider mb-1">NIP / ID</p>
+                       <p className="font-mono text-sm font-medium text-slate-700 bg-white border border-slate-200 px-2 py-1 rounded inline-block">{(teacher as any).nomorIndukPegawai || "-"}</p>
                    </div>
                </div>
                <div>
@@ -89,8 +89,8 @@ export default function VerifyTeacherPage() {
 
             <div className="mt-8 pt-4 border-t border-slate-200 flex flex-col items-center text-center">
                 <img src="/logo-maarif-hijau.png" alt="Logo NU" className="h-12 w-auto mb-2" />
-                <p className="text-[10px] text-slate-400 font-medium">SIMMACI - Sistem Informasi Manajemen Ma'arif<br/>Pimpinan Cabang LP Ma'arif NU Kab. Cilacap</p>
-                <p className="text-[10px] text-slate-500 mt-2 font-medium">Cilacap, {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric'})}</p>
+                <p className="text-[10px] text-slate-400 font-medium">EduSaaS - Sistem Informasi Manajemen EduSaaS<br/>Platform EduSaaS Terpusat</p>
+                <p className="text-[10px] text-slate-500 mt-2 font-medium">Pusat, {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric'})}</p>
             </div>
         </CardContent>
       </Card>

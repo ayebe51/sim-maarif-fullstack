@@ -68,7 +68,7 @@ export default function PpdbLandingPage() {
                         <GraduationCap className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                        <h1 className="text-white font-bold text-lg leading-tight">SIMMACI PPDB</h1>
+                        <h1 className="text-white font-bold text-lg leading-tight">EduSaaS PPDB</h1>
                         <p className="text-emerald-200 text-xs">Penerimaan Peserta Didik Baru Online</p>
                     </div>
                 </div>

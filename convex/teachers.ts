@@ -342,7 +342,7 @@ async function validateWriteAccess(ctx: MutationCtx, targetUnit: string | undefi
 export const create = mutation({
   args: {
     nuptk: v.string(),
-    nomorIndukMaarif: v.optional(v.string()),
+    nomorIndukPegawai: v.optional(v.string()),
     nama: v.string(),
     nip: v.optional(v.string()),
     jenisKelamin: v.optional(v.string()),
@@ -470,7 +470,7 @@ export const update = mutation({
   args: {
     id: v.id("teachers"),
     nuptk: v.optional(v.string()),
-    nomorIndukMaarif: v.optional(v.string()),
+    nomorIndukPegawai: v.optional(v.string()),
     nama: v.optional(v.string()),
     nip: v.optional(v.string()),
     jenisKelamin: v.optional(v.string()),
@@ -704,8 +704,8 @@ export const bulkCreate = mutation({
              mapField(teacher.jenisKelamin || teacher.jk, 'jenisKelamin');
              
              // New: NIM Support
-             const rawNim = safeString(teacher.nomorIndukMaarif || teacher.NIM);
-             if (rawNim) cleanData.nomorIndukMaarif = rawNim;
+             const rawNim = safeString(teacher.nomorIndukPegawai || teacher.NIM);
+             if (rawNim) cleanData.nomorIndukPegawai = rawNim;
              
              const isCertified = safeBool(teacher.isCertified || teacher.sertifikasi);
              if (isCertified !== undefined) cleanData.isCertified = isCertified;
@@ -1018,10 +1018,10 @@ export const generateNextNim = query({
     let maxNim = 0;
     
     for (const t of teachers) {
-        if (!t.nomorIndukMaarif) continue;
+        if (!t.nomorIndukPegawai) continue;
         
         // Remove whitespace
-        const val = String(t.nomorIndukMaarif).trim();
+        const val = String(t.nomorIndukPegawai).trim();
         
         // Check if strictly numeric
         if (/^\d+$/.test(val)) {
@@ -1059,7 +1059,7 @@ export const getByNuptkPublic = query({
     return {
       nama: teacher.nama,
       nuptk: teacher.nuptk,
-      nomorIndukMaarif: teacher.nomorIndukMaarif,
+      nomorIndukPegawai: teacher.nomorIndukPegawai,
       unitKerja: teacher.unitKerja,
       statusPegawai: teacher.statusPegawai,
       isActive: teacher.isActive

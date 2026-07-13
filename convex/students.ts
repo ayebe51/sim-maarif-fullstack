@@ -161,7 +161,7 @@ export const create = mutation({
     nisn: v.any(),
     nama: v.any(),
     nik: v.optional(v.any()),
-    nomorIndukMaarif: v.optional(v.any()),
+    nomorIndukPegawai: v.optional(v.any()),
     jenisKelamin: v.optional(v.any()),
     tempatLahir: v.optional(v.any()),
     tanggalLahir: v.optional(v.any()),
@@ -224,7 +224,7 @@ export const update = mutation({
     nik: v.optional(v.any()),
     nama: v.optional(v.any()),
     npsn: v.optional(v.any()),
-    nomorIndukMaarif: v.optional(v.any()),
+    nomorIndukPegawai: v.optional(v.any()),
     jenisKelamin: v.optional(v.any()),
     tempatLahir: v.optional(v.any()),
     tanggalLahir: v.optional(v.any()),
@@ -255,7 +255,7 @@ export const update = mutation({
         
         // Define allowed fields for schema safety
         const allowedFields = [
-          "nisn", "nik", "nama", "nomorIndukMaarif", "jenisKelamin", 
+          "nisn", "nik", "nama", "nomorIndukPegawai", "jenisKelamin", 
           "tempatLahir", "tanggalLahir", "namaAyah", "namaIbu", "alamat", 
           "provinsi", "kabupaten", "kecamatan", "kelurahan", "namaSekolah", "npsn", "kelas", "nomorTelepon", 
           "namaWali", "photoId", "status", "isVerified", "qrCode"
@@ -312,7 +312,7 @@ export const bulkCreate = mutation({
       nisn: v.any(),
       nama: v.any(),
       nik: v.optional(v.any()),
-      nomorIndukMaarif: v.optional(v.any()),
+      nomorIndukPegawai: v.optional(v.any()),
       jenisKelamin: v.optional(v.any()),
       tempatLahir: v.optional(v.any()),
       tanggalLahir: v.optional(v.any()),

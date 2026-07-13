@@ -166,7 +166,7 @@ export default function SchoolProfilePage() {
                 name="statusJamiyyah" 
                 value={formData.statusJamiyyah} 
                 onChange={handleChange} 
-                placeholder="Contoh: Ma'arif / RMI / Pondok Pesantren"
+                placeholder="Contoh: EduSaaS / RMI / Pondok Pesantren"
               />
             </div>
           </CardContent>

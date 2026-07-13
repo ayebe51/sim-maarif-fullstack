@@ -158,11 +158,11 @@ export default function AppShell({ children }: AppShellProps) {
         <div className="flex h-20 items-center border-b border-slate-100 px-6 bg-gradient-to-r from-emerald-600/5 to-transparent">
           <Link to="/dashboard" className="flex items-center gap-3 font-bold text-xl tracking-tight text-slate-800">
             <div className="p-1.5 bg-white rounded-xl shadow-sm border border-emerald-100">
-                <img src="/logo-icon.png" alt="Logo" className="h-8 w-8 object-contain" />
+                <School className="h-8 w-8 text-emerald-600" />
             </div>
             <div className={cn("flex flex-col justify-center", !sidebarOpen && "hidden")}>
-              <span className="leading-none text-emerald-800 font-extrabold pb-1">SIMMACI</span>
-              <span className="text-[10px] leading-none text-emerald-600/70 font-medium tracking-wide">MA'ARIF NU CILACAP</span>
+              <span className="leading-none text-emerald-800 font-extrabold pb-1">EduSaaS</span>
+              <span className="text-[10px] leading-none text-emerald-600/70 font-medium tracking-wide">EduSaaS</span>
             </div>
           </Link>
         </div>
@@ -193,7 +193,7 @@ export default function AppShell({ children }: AppShellProps) {
 
               if (visibleItems.length === 0) return null
 
-              const isDefaultOpen = group.title === "Master Data" || group.title === "Administrasi SK"
+              const isDefaultOpen = group.title === "Master Data"
 
               return (
                 <Collapsible 

@@ -165,7 +165,7 @@ export default function UserListPage() {
     ];
     worksheet['!cols'] = colWidths;
 
-    XLSX.writeFile(workbook, `Data_User_SIMMACI_${new Date().toISOString().split('T')[0]}.xlsx`);
+    XLSX.writeFile(workbook, `Data_User_EduSaaS_${new Date().toISOString().split('T')[0]}.xlsx`);
   }
 
   return (
@@ -204,7 +204,7 @@ export default function UserListPage() {
                         <div className="grid gap-2">
                             <Label>Nama Lengkap / Sekolah</Label>
                             <Input 
-                                placeholder="Contoh: Operator MI Ma'arif 01" 
+                                placeholder="Contoh: Operator MI EduSaaS 01" 
                                 value={formData.name}
                                 onChange={e => setFormData({...formData, name: e.target.value})}
                             />

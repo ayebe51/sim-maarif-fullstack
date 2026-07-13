@@ -101,7 +101,7 @@ export default function ParticipantList({ competitionId, participants: initialPa
             <Input
               value={newParticipant.institution}
               onChange={(e) => setNewParticipant({ ...newParticipant, institution: e.target.value })}
-              placeholder="Contoh: SMP Ma'arif 1"
+              placeholder="Contoh: SMP EduSaaS 1"
             />
           </div>
           <Button onClick={handleAdd} disabled={loading}>

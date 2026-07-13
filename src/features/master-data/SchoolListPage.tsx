@@ -82,7 +82,7 @@ export default function SchoolListPage() {
     nama: s.nama || "",
     alamat: s.alamat || "",
     provinsi: s.provinsi || "Jawa Tengah",
-    kabupaten: s.kabupaten || "Cilacap",
+    kabupaten: s.kabupaten || "Pusat",
     kecamatan: s.kecamatan || "",
     kelurahan: s.kelurahan || "",
     kepala: s.kepalaMadrasah || "",
@@ -150,14 +150,14 @@ export default function SchoolListPage() {
   const [formData, setFormData] = useState<Partial<School>>({
       nsm: "", nama: "", npsn: "", alamat: "", kecamatan: "", kelurahan: "",
       kepala: "", noHpKepala: "", statusJamiyyah: "", akreditasi: "",
-      provinsi: "Jawa Tengah", kabupaten: "Cilacap"
+      provinsi: "Jawa Tengah", kabupaten: "Pusat"
   })
 
   // Region Data for Dropdowns
   const [regionData, setRegionData] = useState<RegionData | null>(null)
   
   useState(() => {
-     fetch('/data/cilacap.json')
+     fetch('/data/Pusat.json')
        .then(res => res.json())
        .then(data => setRegionData(data))
        .catch(err => console.error("Failed to load region data:", err))
@@ -176,7 +176,7 @@ export default function SchoolListPage() {
 
   // Get unique kecamatan 
   const uniqueKecamatan = [
-    "Cilacap Selatan", "Cilacap Tengah", "Cilacap Utara", "Kesugihan", "Adipala", "Maos", "Kroya", "Binangun", "Nusawungu", "Sampang", "Karangpucung", "Cimanggu", "Majenang", "Wanareja", "Dayeuhluhur", "Gandrungmangu", "Sidareja", "Kedungreja", "Patimuan", "Bantarsari", "Kawunganten", "Jeruklegi", "Kampung Laut", "Cipari"
+    "Pusat Selatan", "Pusat Tengah", "Pusat Utara", "Kesugihan", "Adipala", "Maos", "Kroya", "Binangun", "Nusawungu", "Sampang", "Karangpucung", "Cimanggu", "Majenang", "Wanareja", "Dayeuhluhur", "Gandrungmangu", "Sidareja", "Kedungreja", "Patimuan", "Bantarsari", "Kawunganten", "Jeruklegi", "Kampung Laut", "Cipari"
   ].sort()
 
   const closeDialog = () => {
@@ -199,7 +199,7 @@ export default function SchoolListPage() {
              npsn: formData.npsn,
              alamat: formData.alamat,
              provinsi: "Jawa Tengah", // Hardcoded per plan
-             kabupaten: "Cilacap", // Hardcoded per plan
+             kabupaten: "Pusat", // Hardcoded per plan
              kecamatan: formData.kecamatan,
              kelurahan: formData.kelurahan,
              kepalaMadrasah: formData.kepala,
@@ -214,7 +214,7 @@ export default function SchoolListPage() {
              npsn: formData.npsn,
              alamat: formData.alamat,
              provinsi: "Jawa Tengah", // Hardcoded per plan
-             kabupaten: "Cilacap", // Hardcoded per plan
+             kabupaten: "Pusat", // Hardcoded per plan
              kecamatan: formData.kecamatan,
              kelurahan: formData.kelurahan,
              kepalaMadrasah: formData.kepala,
@@ -274,7 +274,7 @@ export default function SchoolListPage() {
 
   const openAdd = () => {
       setIsEditMode(false)
-      setFormData({ nsm: "", npsn: "", nama: "", alamat: "", kecamatan: "", kelurahan: "", kepala: "", noHpKepala: "", statusJamiyyah: "", provinsi: "Jawa Tengah", kabupaten: "Cilacap" })
+      setFormData({ nsm: "", npsn: "", nama: "", alamat: "", kecamatan: "", kelurahan: "", kepala: "", noHpKepala: "", statusJamiyyah: "", provinsi: "Jawa Tengah", kabupaten: "Pusat" })
       setIsAddOpen(true)
   }
 
@@ -413,7 +413,7 @@ export default function SchoolListPage() {
     <div className="space-y-6">
       <SoftPageHeader
         title="Profil Lembaga"
-        description="Manajemen profil satuan pendidikan di lingkungan LP Ma'arif NU Cilacap"
+        description="Manajemen profil satuan pendidikan di lingkungan Platform EduSaaS"
         actions={(() => {
           const user = userStr ? JSON.parse(userStr) : null;
           if (user?.role === "operator") return []; // Hide all buttons for operators
@@ -691,10 +691,10 @@ export default function SchoolListPage() {
             const templateData = [
                 {
                     "NSM": "121233010001",
-                    "Nama Madrasah": "MI Ma'arif NU 01 Cilacap",
+                    "Nama Madrasah": "SD Harapan Bangsa",
                     "NPSN": "60712345",
                     "Alamat": "Jl. Kemerdekaan No. 45",
-                    "Kecamatan": "Cilacap Tengah",
+                    "Kecamatan": "Pusat Tengah",
                     "No HP Kepala": "081234567890",
                     "Kepala Madrasah": "Ahmad S.Pd.I",
                     "Status": "Maarif",

@@ -46,7 +46,7 @@ interface Student {
   nomorTelepon?: string
   npsn?: string
   namaWali?: string
-  nomorIndukMaarif?: string
+  nomorIndukPegawai?: string
   photoId?: string
   status?: string
 }
@@ -61,7 +61,7 @@ export default function StudentListPage() {
   const [isAddOpen, setIsAddOpen] = useState(false)
   const [formData, setFormData] = useState<Partial<Student>>({
       nisn: "", nama: "", kelas: "", sekolah: "", jk: "L", status: "Aktif",
-      nomorIndukMaarif: "", nik: "", tempatLahir: "", tanggalLahir: "", alamat: "", provinsi: "", kabupaten: "", kecamatan: "", kelurahan: "", nomorTelepon: "", namaAyah: "", namaIbu: "", namaWali: "", npsn: ""
+      nomorIndukPegawai: "", nik: "", tempatLahir: "", tanggalLahir: "", alamat: "", provinsi: "", kabupaten: "", kecamatan: "", kelurahan: "", nomorTelepon: "", namaAyah: "", namaIbu: "", namaWali: "", npsn: ""
   })
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false)
   const [selectedIds, setSelectedIds] = useState<string[]>([])
@@ -77,10 +77,10 @@ export default function StudentListPage() {
     token: localStorage.getItem("token") || "" 
   });
 
-  // API Wilayah (Cilacap Only)
+  // API Wilayah (Pusat Only)
   const [regionData, setRegionData] = useState<any>(null)
   useEffect(() => {
-    fetch('/data/cilacap.json')
+    fetch('/data/Pusat.json')
       .then(res => res.json())
       .then(data => setRegionData(data))
       .catch(console.error)
@@ -293,7 +293,7 @@ export default function StudentListPage() {
         nama: String(formData.nama).trim(),
         // Optional fields
         nik: clean(formData.nik),
-        nomorIndukMaarif: clean(formData.nomorIndukMaarif),
+        nomorIndukPegawai: clean(formData.nomorIndukPegawai),
         jenisKelamin: formData.jk, // Send "L" or "P" directly
         tempatLahir: clean(formData.tempatLahir),
         tanggalLahir: clean(formData.tanggalLahir),
@@ -336,7 +336,7 @@ export default function StudentListPage() {
           setIsAddOpen(false)
           setFormData({ 
               nisn: "", nama: "", kelas: "", sekolah: "", jk: "L", status: "Aktif",
-              nomorIndukMaarif: "", tempatLahir: "", tanggalLahir: "", alamat: "", provinsi: "", kabupaten: "", kecamatan: "", kelurahan: "", nomorTelepon: "", namaWali: "", nik: "", namaAyah: "", namaIbu: "", npsn: ""
+              nomorIndukPegawai: "", tempatLahir: "", tanggalLahir: "", alamat: "", provinsi: "", kabupaten: "", kecamatan: "", kelurahan: "", nomorTelepon: "", namaWali: "", nik: "", namaAyah: "", namaIbu: "", npsn: ""
           })
       } catch (e: any) {
           console.error("Mutation Error:", e)
@@ -506,7 +506,7 @@ export default function StudentListPage() {
     <div className="space-y-6">
       <SoftPageHeader
         title="Data Siswa"
-        description="Data peserta didik di lingkungan LP Ma'arif NU Cilacap"
+        description="Data peserta didik di lingkungan Platform EduSaaS"
         actions={[
           {
             label: 'Export Excel',
@@ -726,7 +726,7 @@ export default function StudentListPage() {
           if (!open) {
               setFormData({ 
                   nisn: "", nama: "", kelas: "", sekolah: "", jk: "L", status: "Aktif",
-                  nomorIndukMaarif: "", tempatLahir: "", tanggalLahir: "", alamat: "", provinsi: "", kabupaten: "", kecamatan: "", kelurahan: "", nomorTelepon: "", namaWali: ""
+                  nomorIndukPegawai: "", tempatLahir: "", tanggalLahir: "", alamat: "", provinsi: "", kabupaten: "", kecamatan: "", kelurahan: "", nomorTelepon: "", namaWali: ""
               })
           }
       }}>
@@ -864,7 +864,7 @@ export default function StudentListPage() {
                         <Select 
                             value={formData.kecamatan} 
                             onValueChange={(val) => {
-                                setFormData({...formData, kecamatan: val, kelurahan: "", provinsi: regionData?.provinsi || "Jawa Tengah", kabupaten: regionData?.kabupaten || "Cilacap"})
+                                setFormData({...formData, kecamatan: val, kelurahan: "", provinsi: regionData?.provinsi || "Jawa Tengah", kabupaten: regionData?.kabupaten || "Pusat"})
                             }}
                         >
                             <SelectTrigger><SelectValue placeholder="Pilih Kecamatan" /></SelectTrigger>

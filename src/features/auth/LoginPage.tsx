@@ -15,6 +15,7 @@ import { toast } from "sonner"
 // 🔥 CONVEX AUTH
 import { useMutation } from "convex/react"
 import { api } from "../../../convex/_generated/api"
+import { School } from "lucide-react"
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -72,16 +73,15 @@ export default function LoginPage() {
         <CardHeader className="space-y-1 text-center relative z-10 pt-8">
           <div className="mb-4 flex justify-center drop-shadow-lg">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 shadow-inner">
-              {/* Logo placeholder */}
-              <img src="/logo-icon.png" alt="Logo" className="h-10 w-10 object-contain drop-shadow-md brightness-0 invert" />
+              <School className="h-10 w-10 text-white drop-shadow-md" />
             </div>
           </div>
           <CardTitle className="text-3xl font-extrabold tracking-tight text-white drop-shadow-sm">
-            SIMMACI
+            EduSaaS
           </CardTitle>
           <CardDescription className="text-emerald-100/80 font-medium">
-            Sistem Informasi Manajemen
-            <br/>Ma'arif NU Cilacap 
+            Sistem Absensi Terpadu
+            <br/>Platform EduSaaS 
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleLogin} className="relative z-10">
@@ -100,7 +100,7 @@ export default function LoginPage() {
               <div className="flex items-center justify-between">
                 <Label htmlFor="password" className="text-emerald-100">Password</Label>
                 <a 
-                  href="https://wa.me/6282227438003?text=Assalamu%27alaikum%20Admin%2C%20saya%20lupa%20password%20akun%20SIMMACI.%20Mohon%20bantu%20reset."
+                  href="https://wa.me/6282227438003?text=Assalamu%27alaikum%20Admin%2C%20saya%20lupa%20password%20akun%20EduSaaS.%20Mohon%20bantu%20reset."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs text-emerald-200 hover:text-white transition-colors hover:underline"
@@ -122,7 +122,7 @@ export default function LoginPage() {
               {loading ? "Menghubungkan..." : "Masuk ke Sistem"}
             </Button>
             <div className="w-full text-center text-xs text-emerald-200/60 font-medium">
-              <p>v1.0 &bull; Lembaga Pendidikan Ma'arif NU Cilacap</p>
+              <p>v1.0 &bull; Platform EduSaaS</p>
             </div>
           </CardFooter>
         </form>

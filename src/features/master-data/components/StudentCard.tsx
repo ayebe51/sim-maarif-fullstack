@@ -151,7 +151,7 @@ export default function StudentCard({ student, isBatch }: StudentCardProps) {
                     <img src="/logo-maarif-white.png" alt="Logo" className="h-10 w-14 object-contain drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
                     <div className="flex flex-col">
                         <h1 className="text-[12px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-500 uppercase tracking-widest leading-none mb-0.5 print-color-yellow">KARTU TANDA PELAJAR</h1>
-                        <h2 className="text-[8px] font-semibold text-blue-300 uppercase tracking-widest leading-none print-color-blue">LP MA'ARIF NU CILACAP</h2>
+                        <h2 className="text-[8px] font-semibold text-blue-300 uppercase tracking-widest leading-none print-color-blue">Platform EduSaaS</h2>
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -219,11 +219,11 @@ export default function StudentCard({ student, isBatch }: StudentCardProps) {
                 <div>
                    <h3 className="text-[9px] font-bold uppercase border-b border-blue-400/30 pb-1.5 mb-2.5 text-blue-300 tracking-widest">Ketentuan Kartu Pelajar</h3>
                    <ul className="text-[7.5px] space-y-1.5 list-none pl-1 text-slate-300">
-                       <li className="flex gap-2"><div className="w-1 h-1 rounded-full bg-yellow-400 mt-1 flex-shrink-0"></div> Kartu ini adalah kartu identitas resmi Siswa LP Ma'arif NU Cilacap.</li>
+                       <li className="flex gap-2"><div className="w-1 h-1 rounded-full bg-yellow-400 mt-1 flex-shrink-0"></div> Kartu ini adalah kartu identitas resmi Siswa Platform EduSaaS.</li>
                        <li className="flex gap-2"><div className="w-1 h-1 rounded-full bg-yellow-400 mt-1 flex-shrink-0"></div> Wajib dibawa saat mengikuti KBM dan kegiatan ekstrakurikuler.</li>
                        <li className="flex gap-2"><div className="w-1 h-1 rounded-full bg-yellow-400 mt-1 flex-shrink-0"></div> Dapat digunakan untuk sistem absensi digital dan perpustakaan.</li>
                        <li className="flex gap-2"><div className="w-1 h-1 rounded-full bg-yellow-400 mt-1 flex-shrink-0"></div> Jika kartu ini hilang, segera lapor ke admin sekolah masing-masing.</li>
-                       <li className="flex gap-2"><div className="w-1 h-1 rounded-full bg-yellow-400 mt-1 flex-shrink-0"></div> Jika menemukan kartu ini, harap kembalikan ke kantor LP Ma'arif NU Cilacap.</li>
+                       <li className="flex gap-2"><div className="w-1 h-1 rounded-full bg-yellow-400 mt-1 flex-shrink-0"></div> Jika menemukan kartu ini, harap kembalikan ke kantor Platform EduSaaS.</li>
                    </ul>
                 </div>
 
@@ -238,7 +238,7 @@ export default function StudentCard({ student, isBatch }: StudentCardProps) {
 
                     {/* Signature Area */}
                     <div className="text-center pr-2">
-                        <p className="text-[7.5px] text-slate-400 mb-1 font-medium">Cilacap, {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric'})}</p>
+                        <p className="text-[7.5px] text-slate-400 mb-1 font-medium">Pusat, {new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric'})}</p>
                         <div className="flex flex-col items-center pt-0 relative">
                             <div className="relative flex justify-center items-center h-10 w-24 mx-auto mb-2 mt-1">
                                 {/* Stempel */}
@@ -247,7 +247,7 @@ export default function StudentCard({ student, isBatch }: StudentCardProps) {
                                 <img src="/ttd-ketua-putih.png" alt="Tanda Tangan" className="absolute top-0 h-12 w-auto object-contain z-10 mix-blend-screen" />
                             </div>
                             <p className="text-[10px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-500 border-b border-yellow-500/30 pb-1 mb-1 px-4 tracking-wide relative z-20">Ali Sodiqin, S.Ag., M.Pd.I.</p>
-                            <p className="text-[6.5px] uppercase tracking-[0.14em] text-blue-300 font-semibold relative z-20">Ketua LP Ma'arif NU Cilacap</p>
+                            <p className="text-[6.5px] uppercase tracking-[0.14em] text-blue-300 font-semibold relative z-20">Ketua Platform EduSaaS</p>
                         </div>
                     </div>
                 </div>

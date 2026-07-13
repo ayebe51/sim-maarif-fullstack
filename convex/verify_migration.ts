@@ -26,27 +26,18 @@ import { internalQuery } from "./_generated/server";
 export const checkSample = internalQuery({
     args: {},
     handler: async (ctx) => {
-        const sks = await ctx.db.query("skDocuments").take(5);
         const users = await ctx.db.query("users").filter(q => q.eq(q.field("role"), "operator")).take(5);
         
-        let validSk = 0;
         let validUser = 0;
-        
-        for (const sk of sks) {
-            if (sk.schoolId) validSk++;
-        }
         
         for (const u of users) {
             if (u.schoolId) validUser++;
         }
         
         return {
-            totalSkChecked: sks.length,
-            validSk: validSk,
             totalUserChecked: users.length,
             validUser: validUser,
             samples: {
-                sk: sks.map(s => ({ nom: s.nomorSk, unit: s.unitKerja, schoolId: s.schoolId })),
                 user: users.map(u => ({ name: u.name, unit: u.unit, schoolId: u.schoolId }))
             }
         };

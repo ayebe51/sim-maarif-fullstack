@@ -19,7 +19,7 @@ interface BroadcastModalProps {
 }
 
 export default function BroadcastModal({ isOpen, onClose, recipients }: BroadcastModalProps) {
-    const [template, setTemplate] = useState("Assalamu'alaikum {nama}, mohon segera update data di SIM Ma'arif.")
+    const [template, setTemplate] = useState("Assalamu'alaikum {nama}, mohon segera update data di SIM EduSaaS.")
     const [sentIds, setSentIds] = useState<Set<string>>(new Set())
 
     // Filter Recipients with Phone Numbers

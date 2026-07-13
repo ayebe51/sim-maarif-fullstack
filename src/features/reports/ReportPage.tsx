@@ -111,8 +111,8 @@ export default function ReportPage() {
       <div className="print:block bg-white p-8 sm:p-0 min-h-[500px]">
           {/* HEADER CETAK */}
           <div className="hidden print:block mb-8 border-b-2 border-black pb-4 text-center">
-              <h2 className="text-2xl font-bold uppercase">Lembaga Pendidikan Ma'arif NU Cilacap</h2>
-              <p className="text-sm">Jl. Masjid No. 09, Cilacap Tengah, Kabupaten Cilacap</p>
+              <h2 className="text-2xl font-bold uppercase">Platform EduSaaS</h2>
+              <p className="text-sm">Jl. Masjid No. 09, Pusat Tengah, Kabupaten Pusat</p>
               <h3 className="text-xl font-bold mt-4 uppercase">
                   {reportType === 'stats' ? 'Laporan Statistik Kepegawaian' : `Data Guru - ${selectedUnit === 'all' ? 'Semua Unit' : selectedUnit}`}
               </h3>
@@ -187,7 +187,7 @@ export default function ReportPage() {
 
           <div className="hidden print:flex justify-end mt-12 w-full break-inside-avoid">
               <div className="text-center mr-8">
-                  <p>Cilacap, {new Date().toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                  <p>Pusat, {new Date().toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                   <p className="mt-2">Ketua Pengurus Cabang</p>
                   <div className="h-24"></div>
                   <p className="font-bold border-b border-black inline-block min-w-[200px]"></p>

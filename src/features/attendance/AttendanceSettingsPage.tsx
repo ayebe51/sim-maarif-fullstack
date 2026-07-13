@@ -237,7 +237,7 @@ export default function AttendanceSettingsPage() {
                 Alamat Localtunnel Yayasan Pusat. Kosongkan jika tidak mau kirim WA.
               </p>
               <Input
-                placeholder="https://simmaci-gowa-pusat.loca.lt"
+                placeholder="https://EduSaaS-gowa-pusat.loca.lt"
                 value={gowaUrl}
                 onChange={(e) => setGowaUrl(e.target.value)}
                 className="font-mono text-sm"

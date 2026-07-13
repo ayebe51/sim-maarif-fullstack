@@ -29,12 +29,6 @@ export default function DashboardOperator() {
   // Fetch Stats (Now includes trends & breakdown)
   const stats = useQuery(api.dashboard.getSchoolStats, user?.email ? { email: user.email } : "skip")
   
-  // Fetch SK Trend specifically (re-using the query from Admin Dash)
-  const skTrend = useQuery(api.dashboard.getSkTrendByMonth, { 
-    months: 6,
-    unitKerja: user?.unitKerja || user?.unit 
-  })
-
 
 
   // Teacher Growth Logic
@@ -113,50 +107,7 @@ export default function DashboardOperator() {
             </CardContent>
           </Card>
 
-          {/* 3. SK TERBIT (With Sparkline) */}
-          <Card className="border-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300 bg-white/70 backdrop-blur-xl overflow-hidden relative rounded-2xl">
-            <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-gradient-to-br from-purple-100/50 to-transparent blur-2xl pointer-events-none" />
-            <CardContent className="p-6 flex flex-col justify-between h-full">
-               <div className="flex items-center justify-between space-x-4 relative z-10">
-                  <div className="flex flex-col space-y-1">
-                      <span className="text-sm font-semibold text-slate-500 tracking-wide">SK Terbit</span>
-                      <span className="text-4xl font-extrabold text-purple-900 tracking-tight">{stats.skApproved}</span>
-                  </div>
-                  <div className="p-3 bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-2xl border border-purple-200/50 shadow-sm">
-                      <CheckCircle className="h-7 w-7 text-purple-600" />
-                  </div>
-               </div>
-               <div className="mt-6 flex justify-between items-end relative z-10">
-                  <span className="flex items-center text-purple-700 bg-purple-100/80 px-3 py-1.5 rounded-lg font-bold border border-purple-200/80 shadow-sm text-xs">
-                      Selesai Diproses
-                  </span>
-                  <div className="absolute right-[-10%] bottom-[-10%] opacity-40 transform translate-y-2 scale-110 pointer-events-none w-20">
-                       <Sparkline data={skTrend || []} color="#9333ea" />
-                  </div>
-               </div>
-            </CardContent>
-          </Card>
 
-          {/* 4. DRAFT SK */}
-          <Card className="border-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300 bg-white/70 backdrop-blur-xl relative overflow-hidden rounded-2xl">
-            <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-gradient-to-br from-amber-100/50 to-transparent blur-2xl pointer-events-none" />
-            <CardContent className="p-6 flex flex-col justify-between h-full">
-               <div className="flex items-center justify-between space-x-4 relative z-10">
-                  <div className="flex flex-col space-y-1">
-                      <span className="text-sm font-semibold text-slate-500 tracking-wide">Draft SK</span>
-                      <span className="text-4xl font-extrabold text-amber-900 tracking-tight">{stats.skDrafts}</span>
-                  </div>
-                  <div className="p-3 bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-2xl border border-amber-200/50 shadow-sm">
-                      <Clock className="h-7 w-7 text-amber-600" />
-                  </div>
-               </div>
-               <div className="mt-6 flex items-center text-xs relative z-10">
-                   <span className="text-amber-700 bg-amber-100/80 border border-amber-200/80 shadow-sm px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" /> Menunggu Pengajuan
-                   </span>
-               </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* CHARTS SECTION */}
@@ -315,81 +266,7 @@ export default function DashboardOperator() {
             </Card>
         </div>
 
-        {/* SK MONITORING SECTION (Semantic Borders) */}
-        <div className="mt-8 space-y-4">
-             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold tracking-tight text-slate-800">Monitoring Status SK</h2>
-              <button onClick={() => navigate('/dashboard/sk/history')} className="text-sm text-blue-600 hover:underline">Lihat Riwayat &rarr;</button>
-            </div>
 
-            <div className="grid gap-4 md:grid-cols-4">
-              <Card className="border-l-4 border-l-blue-500 shadow-sm">
-                <CardContent className="p-4 flex items-center justify-between">
-                  <div>
-                     <p className="text-sm text-slate-500 font-medium">Total Diajukan</p>
-                     <p className="text-2xl font-bold text-slate-900">{stats.totalSk}</p>
-                  </div>
-                  <div className="bg-blue-50 p-2 rounded-full"><FileText className="h-5 w-5 text-blue-600" /></div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-l-4 border-l-yellow-500 shadow-sm bg-yellow-50/10">
-                <CardContent className="p-4 flex items-center justify-between">
-                  <div>
-                     <p className="text-sm text-slate-500 font-medium">Pending</p>
-                     <p className="text-2xl font-bold text-yellow-600">{stats.skDrafts}</p>
-                  </div>
-                  <div className="bg-yellow-100 p-2 rounded-full"><Clock className="h-5 w-5 text-yellow-600" /></div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-l-4 border-l-green-500 shadow-sm bg-green-50/10">
-                <CardContent className="p-4 flex items-center justify-between">
-                  <div>
-                     <p className="text-sm text-slate-500 font-medium">Disetujui</p>
-                     <p className="text-2xl font-bold text-green-600">{stats.skApproved}</p>
-                  </div>
-                  <div className="bg-green-100 p-2 rounded-full"><CheckCircle className="h-5 w-5 text-green-600" /></div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-l-4 border-l-red-500 shadow-sm bg-red-50/10">
-                <CardContent className="p-4 flex items-center justify-between">
-                  <div>
-                     <p className="text-sm text-slate-500 font-medium">Ditolak</p>
-                     <p className="text-2xl font-bold text-red-600">{stats.skRejected}</p>
-                  </div>
-                  <div className="bg-red-100 p-2 rounded-full"><AlertOctagon className="h-5 w-5 text-red-600" /></div>
-                </CardContent>
-              </Card>
-            </div>
-        </div>
-
-        {/* SK TREND CHART */}
-        {skTrend && skTrend.length > 0 && (
-             <Card className="mt-6">
-                <CardHeader><CardTitle>Trend Pengajuan SK (6 Bulan)</CardTitle></CardHeader>
-                <CardContent>
-                  <div className="h-[250px] w-full">
-                     <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-                         <AreaChart data={skTrend} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                             <defs>
-                                 <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
-                                     <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                                     <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                                 </linearGradient>
-                             </defs>
-                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                             <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fontSize: 12}} dy={10} />
-                             <YAxis axisLine={false} tickLine={false} tick={{fontSize: 12}} />
-                             <Tooltip contentStyle={{borderRadius: '8px'}} />
-                             <Area type="monotone" dataKey="count" stroke="#3b82f6" fillOpacity={1} fill="url(#colorCount)" />
-                         </AreaChart>
-                     </ResponsiveContainer>
-                  </div>
-                </CardContent>
-             </Card>
-        )}
         </>
       )}
 
@@ -403,7 +280,6 @@ export default function DashboardOperator() {
             {[
                 { label: "Data Guru", description: "Kelola data pengajar", icon: Users, path: "/dashboard/master/teachers", color: "bg-blue-100/80 text-blue-600 border-blue-200/50", gradient: "from-blue-50/50 to-white" },
                 { label: "Data Siswa", description: "Database siswa aktif", icon: School, path: "/dashboard/master/students", color: "bg-orange-100/80 text-orange-600 border-orange-200/50", gradient: "from-orange-50/50 to-white" },
-                { label: "Ajukan SK Kolektif", description: "Buat pengajuan baru", icon: FileText, path: "/dashboard/sk/new", color: "bg-emerald-100/80 text-emerald-600 border-emerald-200/50", gradient: "from-emerald-50/50 to-white" },
                 { label: "Profil Sekolah", description: "Update informasi lembaga", icon: School, path: "/dashboard/school/profile", color: "bg-purple-100/80 text-purple-600 border-purple-200/50", gradient: "from-purple-50/50 to-white" },
             ].map((action, i) => (
                 <Card 

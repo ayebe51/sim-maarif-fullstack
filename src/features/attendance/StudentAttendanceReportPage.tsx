@@ -261,9 +261,9 @@ export default function StudentAttendanceReportPage() {
             <div className="overflow-x-auto relative min-h-[400px]">
                {/* PRINT HEADER (Kop Surat) */}
                <div className="hidden print:block text-center kop-surat">
-                 <h2 className="text-xl font-bold uppercase leading-tight">Lembaga Pendidikan Ma'arif NU Cilacap</h2>
+                 <h2 className="text-xl font-bold uppercase leading-tight">Platform EduSaaS</h2>
                  <h3 className="text-lg font-bold uppercase leading-tight">{user?.unitKerja || "Unit Kerja"}</h3>
-                 <p className="text-xs italic mt-1">Sistem Informasi Manajemen Madrasah Cilacap (SIMMACI)</p>
+                 <p className="text-xs italic mt-1">Sistem Absensi Sekolah (EduSaaS)</p>
                  
                  <div className="flex justify-between items-end mt-6 text-left text-xs">
                     <div className="space-y-1">
@@ -353,7 +353,7 @@ export default function StudentAttendanceReportPage() {
                               <p className="font-bold underline">( ............................ )</p>
                           </div>
                           <div className="text-center w-40">
-                              <p>Cilacap, {new Date().toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}</p>
+                              <p>Pusat, {new Date().toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}</p>
                               <p className="mb-16">Guru Mata Pelajaran</p>
                               <p className="font-bold underline">( {user?.nama || "............................"} )</p>
                           </div>
@@ -366,7 +366,7 @@ export default function StudentAttendanceReportPage() {
       </Card>
       
       <p className="text-[10px] text-slate-400 italic text-center print:hidden uppercase tracking-widest font-bold">
-        SIMMACI DIGITAL REKAPITULASI • PERSENSI OTOMATIS
+        EduSaaS DIGITAL REKAPITULASI • PERSENSI OTOMATIS
       </p>
     </div>
   );

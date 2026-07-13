@@ -118,8 +118,7 @@ export const getDashboardStats = query({
       teacherTrend: last6Months.map(({ label, count }) => ({ month: label, count })),
       totalTeachers: teachers.filter(t => t.isActive !== false).length,
       totalSchools: await ctx.db.query("schools").collect().then(s => s.length),
-      totalStudents: await ctx.db.query("students").collect().then(s => s.length),
-      totalSk: await ctx.db.query("skDocuments").collect().then(s => s.length)
+      totalStudents: await ctx.db.query("students").collect().then(s => s.length)
     };
   },
 });

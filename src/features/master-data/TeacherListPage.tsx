@@ -32,7 +32,7 @@ import BroadcastModal from "./components/BroadcastModal"
 interface Teacher {
   id: string
   nuptk?: string
-  nomorIndukMaarif?: string
+  nomorIndukPegawai?: string
   nama: string
   status?: string
   mapel: string
@@ -100,7 +100,7 @@ export default function TeacherListPage() {
      return teacherResults.map((t: any) => ({
         id: t._id,
         nuptk: t.nuptk,
-        nomorIndukMaarif: t.nomorIndukMaarif,
+        nomorIndukPegawai: t.nomorIndukPegawai,
         nama: t.nama || "",
         status: t.status || "",
         mapel: t.mapel || "",
@@ -178,10 +178,10 @@ export default function TeacherListPage() {
   const [schoolSearch, setSchoolSearch] = useState("")
   const [openSchoolDropdown, setOpenSchoolDropdown] = useState(false)
 
-  // API Wilayah (Cilacap Only)
+  // API Wilayah (Pusat Only)
   const [regionData, setRegionData] = useState<any>(null)
   useEffect(() => {
-    fetch('/data/cilacap.json')
+    fetch('/data/Pusat.json')
       .then(res => res.json())
       .then(data => setRegionData(data))
       .catch(console.error)
@@ -202,7 +202,7 @@ export default function TeacherListPage() {
   const [isAddOpen, setIsAddOpen] = useState(false)
   const [isEditMode, setIsEditMode] = useState(false)
   const [formData, setFormData] = useState<Partial<Teacher>>({
-      nama: "", nuptk: "", nomorIndukMaarif: "", status: "GTY", satminkal: "", mapel: "", phoneNumber: "", birthPlace: "", birthDate: "", provinsi: "", kabupaten: "", kecamatan: "", kelurahan: ""
+      nama: "", nuptk: "", nomorIndukPegawai: "", status: "GTY", satminkal: "", mapel: "", phoneNumber: "", birthPlace: "", birthDate: "", provinsi: "", kabupaten: "", kecamatan: "", kelurahan: ""
   })
 
   // 📄 CLIENT-SIDE PAGINATION STATE
@@ -285,7 +285,7 @@ export default function TeacherListPage() {
   const openAdd = () => {
       setIsEditMode(false)
       const initialData: Partial<Teacher> = { 
-          nuptk: "", nama: "", nomorIndukMaarif: "", status: "GTY", satminkal: "", mapel: "", phoneNumber: "", birthPlace: "", birthDate: "", pendidikanTerakhir: "", provinsi: "", kabupaten: "", kecamatan: "", kelurahan: ""
+          nuptk: "", nama: "", nomorIndukPegawai: "", status: "GTY", satminkal: "", mapel: "", phoneNumber: "", birthPlace: "", birthDate: "", pendidikanTerakhir: "", provinsi: "", kabupaten: "", kecamatan: "", kelurahan: ""
       }
       if (userUnit) {
           initialData.unitKerja = userUnit;
@@ -304,7 +304,7 @@ export default function TeacherListPage() {
   const closeDialog = () => {
       setIsAddOpen(false)
       setIsEditMode(false)
-      setFormData({ nuptk: "", nama: "", nomorIndukMaarif: "", status: "", satminkal: "", mapel: "", phoneNumber: "", birthPlace: "", birthDate: "", pendidikanTerakhir: "" })
+      setFormData({ nuptk: "", nama: "", nomorIndukPegawai: "", status: "", satminkal: "", mapel: "", phoneNumber: "", birthPlace: "", birthDate: "", pendidikanTerakhir: "" })
   }
 
   const handleSave = async () => {
@@ -312,7 +312,7 @@ export default function TeacherListPage() {
       try {
         const cleanPayload: any = {
             nuptk: String(formData.nuptk || ""),
-            nomorIndukMaarif: String(formData.nomorIndukMaarif || ""),
+            nomorIndukPegawai: String(formData.nomorIndukPegawai || ""),
             nama: String(formData.nama || "").trim(),
         };
         const addIfPresent = (key: string, val: any) => {
@@ -410,7 +410,7 @@ export default function TeacherListPage() {
     <div className="space-y-6">
       <SoftPageHeader
         title="Data Guru & Tenaga Kependidikan"
-        description="Manajemen data guru dan tenaga kependidikan di lingkungan LP Ma'arif NU Cilacap"
+        description="Manajemen data guru dan tenaga kependidikan di lingkungan Platform EduSaaS"
         actions={[
           { label: 'Export Excel', onClick: handleExport, variant: 'mint', icon: <Download className="h-5 w-5 text-gray-700" /> },
           ...(userStr && ["super_admin", "admin"].includes(JSON.parse(userStr).role) ? [{
@@ -516,7 +516,7 @@ export default function TeacherListPage() {
                             </TableCell>
                             <TableCell>
                                 <div className="font-medium">{item.nuptk || "-"}</div>
-                                {item.nomorIndukMaarif && <div className="text-xs text-muted-foreground font-mono mt-1">{item.nomorIndukMaarif}</div>}
+                                {item.nomorIndukPegawai && <div className="text-xs text-muted-foreground font-mono mt-1">{item.nomorIndukPegawai}</div>}
                             </TableCell>
                             <TableCell>
                                 <div className="flex flex-col">
@@ -621,9 +621,9 @@ export default function TeacherListPage() {
                       <Label className="text-right">N.I.M</Label>
                       <div className="col-span-3 flex gap-2">
                           <Input 
-                              value={formData.nomorIndukMaarif || ""} 
-                              onChange={e => setFormData({...formData, nomorIndukMaarif: e.target.value})} 
-                              placeholder="Nomor Induk Ma'arif"
+                              value={formData.nomorIndukPegawai || ""} 
+                              onChange={e => setFormData({...formData, nomorIndukPegawai: e.target.value})} 
+                              placeholder="Nomor Induk Pegawai"
                               className="flex-1"
                           />
                            <Button
@@ -633,7 +633,7 @@ export default function TeacherListPage() {
                                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                                       // @ts-ignore
                                       const nextNim = await convex.query(convexApi.teachers.generateNextNim);
-                                      if (nextNim) setFormData({...formData, nomorIndukMaarif: nextNim});
+                                      if (nextNim) setFormData({...formData, nomorIndukPegawai: nextNim});
                                   } catch (e) { toast.error("Gagal generate.") }
                               }}
                            >
@@ -663,7 +663,7 @@ export default function TeacherListPage() {
                      <Select 
                          value={formData.kecamatan} 
                          onValueChange={(val) => {
-                             setFormData({...formData, kecamatan: val, kelurahan: "", provinsi: regionData?.provinsi || "Jawa Tengah", kabupaten: regionData?.kabupaten || "Cilacap"})
+                             setFormData({...formData, kecamatan: val, kelurahan: "", provinsi: regionData?.provinsi || "Jawa Tengah", kabupaten: regionData?.kabupaten || "Pusat"})
                          }}
                      >
                          <SelectTrigger className="col-span-3"><SelectValue placeholder="Pilih Kecamatan" /></SelectTrigger>
@@ -786,7 +786,7 @@ export default function TeacherListPage() {
              // Simplified for brevity in rewrite, assume standard template
              const headers = [
                "NUPTK",
-               "Nomor Induk Ma'arif",
+               "Nomor Induk Pegawai",
                "Nama", 
                "NIP",
                "Jenis Kelamin",
@@ -808,11 +808,11 @@ export default function TeacherListPage() {
                "Ahmad Contoh, S.Pd",
                "-",
                "L",
-               "Cilacap",
+               "Pusat",
                "12 Februari 1990",
                "S1",
-               "MI Ma'arif 01 Cilacap",
-               "Cilacap Selatan",
+               "SD Harapan Bangsa",
+               "Pusat Selatan",
                "GTY",
                "17 Juli 2015",
                "08123456789",
@@ -864,7 +864,7 @@ export default function TeacherListPage() {
                     return {
                         nama: r.Nama || r.nama,
                         nuptk: r.NUPTK ? String(r.NUPTK) : undefined,
-                        nomorIndukMaarif: r["Nomor Induk Ma'arif"] ? String(r["Nomor Induk Ma'arif"]) : undefined,
+                        nomorIndukPegawai: r["Nomor Induk Pegawai"] ? String(r["Nomor Induk Pegawai"]) : undefined,
                         nip: r.NIP ? String(r.NIP) : undefined,
                         jenisKelamin: r['Jenis Kelamin'] === 'L' ? 'Laki-Laki' : (r['Jenis Kelamin'] === 'P' ? 'Perempuan' : undefined),
                         ttl: ttl,

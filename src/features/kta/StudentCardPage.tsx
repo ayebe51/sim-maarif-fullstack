@@ -81,7 +81,7 @@ export default function StudentCardPage() {
       <div className="flex justify-between items-center print:hidden">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-blue-900">Kartu Pelajar Digital</h1>
-          <p className="text-muted-foreground">Generator Kartu Identitas Siswa LP Ma'arif NU Cilacap</p>
+          <p className="text-muted-foreground">Generator Kartu Identitas Siswa Platform EduSaaS</p>
         </div>
         <div className="flex gap-3">
             <div className="bg-white/50 backdrop-blur-md p-1 rounded-2xl border border-white/60 shadow-sm flex items-center">

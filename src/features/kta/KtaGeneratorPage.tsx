@@ -39,7 +39,7 @@ export default function KtaGeneratorPage() {
       <div className="flex justify-between items-center print:hidden">
         <div>
           <h1 className="text-3xl font-black tracking-tight text-slate-900">KTA Digital Guru</h1>
-          <p className="text-muted-foreground text-sm">Generator Kartu Identitas LP Ma'arif NU Cilacap</p>
+          <p className="text-muted-foreground text-sm">Generator Kartu Identitas Platform EduSaaS</p>
         </div>
         <div className="flex gap-2">
            <Button variant={isBatchMode ? "default" : "outline"} onClick={() => setIsBatchMode(!isBatchMode)}>

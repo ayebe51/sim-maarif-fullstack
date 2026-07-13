@@ -36,7 +36,7 @@ export default function PublicVerificationPage({ isTeacher, isStudent }: { isTea
     const data = verificationData
 
 
-    // 🔥 BYPASS FOR TESTING "Cilacap" FOOTER
+    // 🔥 BYPASS FOR TESTING "Pusat" FOOTER
     if (isTest) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
@@ -58,7 +58,7 @@ export default function PublicVerificationPage({ isTeacher, isStudent }: { isTea
                         </div>
                         <div className="text-center pt-6 border-t">
                             <p className="text-xs text-slate-400">
-                                &copy; {new Date().getFullYear()} LP Ma'arif NU Kab. Cilacap
+                                &copy; {new Date().getFullYear()} Platform EduSaaS Kab. Pusat
                             </p>
                         </div>
                     </CardContent>
@@ -126,8 +126,8 @@ export default function PublicVerificationPage({ isTeacher, isStudent }: { isTea
                                     </h3>
                                     <p className="text-sm text-green-700 mt-1">
                                         {isTeacher 
-                                          ? "Data ini tercatat resmi di database Ma'arif Cilacap."
-                                          : (isStudent ? "Siswa ini terdaftar resmi di database Ma'arif Cilacap." : "Dokumen ini tercatat resmi dan aktif.")}
+                                          ? "Data ini tercatat resmi di database EduSaaS."
+                                          : (isStudent ? "Siswa ini terdaftar resmi di database EduSaaS." : "Dokumen ini tercatat resmi dan aktif.")}
                                     </p>
                                 </div>
                             )}
@@ -203,7 +203,7 @@ export default function PublicVerificationPage({ isTeacher, isStudent }: { isTea
                     
                     <div className="text-center pt-6 border-t">
                         <p className="text-xs text-slate-400">
-                            &copy; {new Date().getFullYear()} LP Ma'arif NU Kab. Cilacap
+                            &copy; {new Date().getFullYear()} Platform EduSaaS Kab. Pusat
                         </p>
                     </div>
                 </CardContent>

@@ -18,18 +18,11 @@ export const getStats = query({
       .query("schools")
       .collect();
     
-    const skDocuments = await ctx.db
-      .query("skDocuments")
-      .collect();
-    
     // Calculate active counts
     const activeTeachers = teachers.filter(t => t.isActive !== false).length;
     const activeStudents = students.length;
     const activeSchools = schools.length;
-    
-    // SK by status
-    const activeSk = skDocuments.filter(sk => sk.status === 'active').length;
-    const draftSk = skDocuments.filter(sk => sk.status === 'draft').length;
+
     
     const emisSync = await ctx.db
       .query("settings")
@@ -57,9 +50,6 @@ export const getStats = query({
       totalTeachers: activeTeachers,
       totalStudents: activeStudents,
       totalSchools: activeSchools,
-      totalSk: skDocuments.length,
-      activeSk,
-      draftSk,
       lastUpdated: Date.now(),
       lastEmisSync: emisSync ? emisSync.value : null,
       recentLogs, // Delivered together with statistics
@@ -106,13 +96,7 @@ export const recordEmisSync = mutation({
 export const getRecentActivities = query({
   args: {},
   handler: async (ctx) => {
-    // Get recent SK documents
-    const recentSk = await ctx.db
-      .query("skDocuments")
-      .order("desc")
-      .take(10);
-    
-    return recentSk;
+    return [];
   },
 });
 
@@ -160,148 +144,7 @@ export const getChartsData = query({
   },
 });
 
-// ========================================
-// 📊 SK MONITORING DASHBOARD QUERIES
-// ========================================
 
-/**
- * Get comprehensive SK statistics grouped by status
- */
-export const getSkStatistics = query({
-  args: {
-    unitKerja: v.optional(v.string()),
-  },
-  handler: async (ctx, args) => {
-    let sks = await ctx.db.query("skDocuments").collect();
-    
-    // Filter by school if provided (for operators)
-    if (args.unitKerja) {
-      sks = sks.filter(sk => sk.unitKerja === args.unitKerja);
-    }
-
-    // Count by status
-    const stats = {
-      total: sks.length,
-      draft: sks.filter(sk => sk.status === "draft").length,
-      pending: sks.filter(sk => sk.status === "pending").length,
-      approved: sks.filter(sk => sk.status === "approved").length,
-      rejected: sks.filter(sk => sk.status === "rejected").length,
-      active: sks.filter(sk => sk.status === "active").length,
-    };
-
-    return stats;
-  },
-});
-
-/**
- * Get SK trend data for the last N months
- */
-export const getSkTrendByMonth = query({
-  args: {
-    months: v.number(),
-    unitKerja: v.optional(v.string()),
-  },
-  handler: async (ctx, args) => {
-    let sks = await ctx.db.query("skDocuments").collect();
-    
-    // Filter by school if provided
-    if (args.unitKerja) {
-      sks = sks.filter(sk => sk.unitKerja === args.unitKerja);
-    }
-
-    // Group by month
-    const now = Date.now();
-    const monthsAgo = args.months;
-    const trendData: { month: string; count: number }[] = [];
-
-    for (let i = monthsAgo - 1; i >= 0; i--) {
-      const date = new Date(now);
-      date.setMonth(date.getMonth() - i);
-      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-      const monthName = date.toLocaleDateString('id-ID', { month: 'short', year: 'numeric' });
-      
-      const count = sks.filter(sk => {
-        const skDate = new Date(sk.createdAt);
-        const skMonthKey = `${skDate.getFullYear()}-${String(skDate.getMonth() + 1).padStart(2, '0')}`;
-        return skMonthKey === monthKey;
-      }).length;
-
-      trendData.push({
-        month: monthName,
-        count,
-      });
-    }
-
-    return trendData;
-  },
-});
-
-/**
- * Get SKs expiring within the next N days
- * NOTE: Disabled - masaBerlaku field doesn't exist in current schema
- */
-/*
-export const getExpiringSk = query({
-  args: {
-    daysAhead: v.number(),
-    unitKerja: v.optional(v.string()),
-  },
-  handler: async (ctx, args) => {
-    let sks = await ctx.db.query("skDocuments").collect();
-    
-    // Filter by school if provided
-    if (args.unitKerja) {
-      sks = sks.filter(sk => sk.unitKerja === args.unitKerja);
-    }
-
-    const now = Date.now();
-    const futureDate = now + (args.daysAhead * 24 * 60 * 60 * 1000);
-
-    // Filter SKs that expire within the timeframe (using masaBerlaku if exists)
-    const expiring = sks.filter(sk => {
-      if (!sk.masaBerlaku) return false;
-      
-      const expiryDate = new Date(sk.masaBerlaku).getTime();
-      return expiryDate > now && expiryDate <= futureDate && sk.status === 'active';
-    });
-
-    return expiring.map(sk => ({
-      id: sk._id,
-      nama: sk.nama,
-      jenisSk: sk.jenisSk,
-      masaBerlaku: sk.masaBerlaku,
-      unitKerja: sk.unitKerja,
-      daysUntilExpiry: Math.ceil((new Date(sk.masaBerlaku!).getTime() - now) / (24 * 60 * 60 * 1000)),
-    })).sort((a, b) => a.daysUntilExpiry - b.daysUntilExpiry);
-  },
-});
-*/
-
-/**
- * Get SK count breakdown by school (Admin only)
- */
-export const getSchoolBreakdown = query({
-  args: {},
-  handler: async (ctx) => {
-    const sks = await ctx.db.query("skDocuments").collect();
-    
-    // Group by school (unitKerja)
-    const schoolMap = new Map<string, number>();
-    
-    sks.forEach(sk => {
-      const school = sk.unitKerja || "Unknown";
-      schoolMap.set(school, (schoolMap.get(school) || 0) + 1);
-    });
-
-    // Convert to array and sort by count
-    const breakdown = Array.from(schoolMap.entries())
-      .map(([school, count]) => ({ school, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 10); // Top 10 schools
-
-    return breakdown;
-  },
-});
 
 // NEW: Stats specifically for School Operators
 export const getSchoolStats = query({
@@ -378,36 +221,15 @@ export const getSchoolStats = query({
     const certData = Object.entries(certCounts).map(([name, value]) => ({ name, value }));
 
     // Parallelize other queries
-    const [students, skDrafts, skApproved, totalSk, skTrend] = await Promise.all([
+    const [students] = await Promise.all([
       // Student Count
       ctx.db.query("students").collect().then(res => res.filter(s => s.namaSekolah === schoolName).length),
-      // SK Drafts
-      ctx.db.query("skDocuments").collect().then(res => res.filter(sk => sk.unitKerja === schoolName && sk.status === "draft").length),
-      // SK Verified
-      ctx.db.query("skDocuments").collect().then(res => res.filter(sk => sk.unitKerja === schoolName && (sk.status === "approved" || sk.status === "active")).length),
-      // Total SK
-       ctx.db.query("skDocuments").collect().then(res => res.filter(sk => sk.unitKerja === schoolName).length),
-      // SK Trend (Re-use existing function logic or just call it? calling query from query is not allowed directly easily inside handler without `runQuery` which is internal. 
-      // Simplified Trend for SK: Group by month for this school
-       ctx.db.query("skDocuments").collect().then(res => {
-          const schoolSks = res.filter(sk => sk.unitKerja === schoolName);
-           // ... logic similar to teacher trend ...
-           const skTrendData = last6Months.map(b => ({...b, count: 0})); // Reuse buckets
-           // We need deep copy or re-calc
-           return []; // Placeholder if too complex to inline. 
-           // ACTUALLY: The frontend calls `getSkTrendByMonth` separately! I don't need to return it here.
-           // BUT I need `teacherTrend` here.
-       })
     ]);
 
     return {
       schoolName,
       teachers: teachersList.length,
       students,
-      skDrafts, // "Pending" for UI
-      skApproved, // "Total SK" for UI? No, Approved
-      totalSk, // All applied
-      skRejected: await ctx.db.query("skDocuments").collect().then(res => res.filter(sk => sk.unitKerja === schoolName && sk.status === "rejected").length),
       teacherTrend,
       status: statusData,
       certification: certData,

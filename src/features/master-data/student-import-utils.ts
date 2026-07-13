@@ -18,7 +18,7 @@ const TEMPLATE_HEADERS = [
   "Kecamatan",
   "Nomor Telepon",
   "Nama Wali",
-  "Nomor Induk Maarif"
+  "Nomor Induk Pegawai"
 ];
 
 const TEMPLATE_SAMPLE_DATA = [
@@ -26,19 +26,19 @@ const TEMPLATE_SAMPLE_DATA = [
     "1234567890", // NISN
     "Siswa Contoh", // Nama
     "3301xxxxxxxx", // NIK
-    "Cilacap", // Tempat Lahir
+    "Pusat", // Tempat Lahir
     "2010-01-01", // Tanggal Lahir
     "7A", // Kelas
     "L", // L/P
     "Nama Ayah", // Nama Ayah
     "Nama Ibu", // Nama Ibu
-    "MI Ma'arif 01", // Asal Sekolah
+    "MI EduSaaS 01", // Asal Sekolah
     "12345678", // NPSN
     "Jl. Contoh No. 1", // Alamat
-    "Cilacap Tengah", // Kecamatan
+    "Pusat Tengah", // Kecamatan
     "08123456789", // Telepon
     "Wali Contoh", // Nama Wali
-    "123.456.789" // Nomor Induk Maarif
+    "123.456.789" // Nomor Induk Pegawai
   ]
 ];
 
@@ -108,7 +108,7 @@ export const processStudentImport = async (file: File): Promise<any[]> => {
                 kecamatan: row["Kecamatan"] || row["kecamatan"],
                 nomorTelepon: String(row["Nomor Telepon"] || row["telepon"] || "").trim(),
                 namaWali: row["Nama Wali"] || row["wali"],
-                nomorIndukMaarif: String(row["Nomor Induk Maarif"] || row["id_maarif"] || "").trim(),
+                nomorIndukPegawai: String(row["Nomor Induk Pegawai"] || row["id_maarif"] || "").trim(),
              };
         }).filter(s => s.nisn && s.nama); // Filter empty rows (Must have NISN & Nama)
 

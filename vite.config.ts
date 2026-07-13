@@ -14,8 +14,8 @@ export default defineConfig({
       },
       includeAssets: ['logo-icon.png', 'logo-full.jpg'],
       manifest: {
-        name: 'SIM Maarif NU Cilacap',
-        short_name: 'SIMMACI',
+        name: 'SIM Maarif NU Pusat',
+        short_name: 'EduSaaS',
         description: 'Sistem Informasi Manajemen Data Pendidikan & Generator SK Digital',
         theme_color: '#059669',
         background_color: '#ffffff',

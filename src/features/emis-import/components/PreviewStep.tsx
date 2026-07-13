@@ -67,7 +67,7 @@ export function PreviewStep({ data, mapping, onBack, onFinish }: PreviewStepProp
             .map((row) => ({
               nisn: String(row.nisn),
               nama: String(row.name || ''),
-              nomorIndukMaarif: row.nomorIndukMaarif ? String(row.nomorIndukMaarif) : undefined,
+              nomorIndukPegawai: row.nomorIndukPegawai ? String(row.nomorIndukPegawai) : undefined,
               jenisKelamin: row.gender ? String(row.gender) : undefined,
               tempatLahir: row.birthPlace ? String(row.birthPlace) : undefined,
               tanggalLahir: row.birthDate ? String(row.birthDate) : undefined,

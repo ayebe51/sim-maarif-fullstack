@@ -88,8 +88,8 @@ export default function SettingsPage() {
   // Default Settings State
   const [settings, setSettings] = useState({
     // Profil Lembaga
-    namaYayasan: "Lembaga Pendidikan Ma'arif NU Cilacap",
-    alamatYayasan: "Jl. Masjid No. 09, Cilacap",
+    namaYayasan: "Platform EduSaaS",
+    alamatYayasan: "Jl. Masjid No. 09, Pusat",
     teleponYayasan: "0282-123456",
     
     // SK Settings - Dual Signatories
