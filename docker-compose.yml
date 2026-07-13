@@ -5,7 +5,7 @@ services:
   # 1. Database & Backend Serverless (Convex Local)
   # ========================================
   convex-backend:
-    image: ghcr.io/getconvex/convex-local:latest
+    image: ghcr.io/get-convex/convex-backend:latest
     container_name: simmaci_convex
     ports:
       - "3210:3210" # API Port (Digunakan oleh Frontend)
