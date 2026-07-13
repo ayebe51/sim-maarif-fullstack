@@ -2,6 +2,47 @@ import { QueryCtx, MutationCtx } from "./_generated/server";
 import { v } from "convex/values";
 import { Id } from "./_generated/dataModel";
 
+// Cryptographic helpers
+export function generateSalt(): string {
+  return crypto.randomUUID();
+}
+
+export async function hashPasswordWithSalt(password: string, salt: string): Promise<string> {
+  const enc = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(password),
+    { name: "PBKDF2" },
+    false,
+    ["deriveBits", "deriveKey"]
+  );
+  
+  const saltBuffer = enc.encode(salt);
+  
+  const key = await crypto.subtle.deriveKey(
+    {
+      name: "PBKDF2",
+      salt: saltBuffer,
+      iterations: 100000,
+      hash: "SHA-256",
+    },
+    keyMaterial,
+    { name: "AES-GCM", length: 256 },
+    true,
+    ["encrypt", "decrypt"]
+  );
+  
+  const exported = await crypto.subtle.exportKey("raw", key);
+  const hashArray = Array.from(new Uint8Array(exported));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  return hashHex;
+}
+
+export async function verifyPasswordSecure(password: string, salt: string, expectedHash: string): Promise<boolean> {
+  const computedHash = await hashPasswordWithSalt(password, salt);
+  return computedHash === expectedHash;
+}
+
 // Generate a random token
 function generateToken(): string {
   // Simple random token for now. In Node env we could use crypto.

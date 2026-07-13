@@ -20,6 +20,7 @@ import {
   CheckCircle2,
   XCircle,
   Loader2,
+  CloudUpload,
 } from "lucide-react";
 
 type ScanMode = "select" | "guru" | "siswa";
@@ -32,6 +33,8 @@ export default function QrScannerPage() {
   const [mode, setMode] = useState<ScanMode>("select");
   const [scanning, setScanning] = useState(false);
   const [scanResults, setScanResults] = useState<Array<{ name: string; status: string; time: string }>>([]);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [offlineCount, setOfflineCount] = useState(0);
 
   // Siswa mode selections
   const [selectedClassId, setSelectedClassId] = useState("");
@@ -41,6 +44,23 @@ export default function QrScannerPage() {
 
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const scanCooldownRef = useRef(false);
+
+  // Auto-auth for logged-in users with a schoolId
+  useEffect(() => {
+    const userStr = localStorage.getItem("user");
+    const user = userStr ? JSON.parse(userStr) : null;
+
+    if (user && user.schoolId && authState === "pin") {
+      setSchoolId(user.schoolId);
+      setAuthState("authenticated");
+      
+      // If teacher, default to scanning students
+      if (user.role === "teacher") {
+        setMode("siswa");
+        if (user.teacherId) setSelectedTeacherId(user.teacherId);
+      }
+    }
+  }, [authState]);
 
   // Queries
   const schools = useQuery(api.schools.list);
@@ -66,6 +86,75 @@ export default function QrScannerPage() {
   // Mutations
   const smartScanTeacher = useMutation(api.teacherAttendance.smartScan);
   const recordStudentScan = useMutation(api.studentAttendance.recordScan);
+
+  // Sync Engine
+  useEffect(() => {
+    const checkOfflineCount = () => {
+        const queue = JSON.parse(localStorage.getItem("offlineScans") || "[]");
+        setOfflineCount(queue.length);
+    };
+    checkOfflineCount();
+
+    let syncInterval: NodeJS.Timeout;
+    const syncScans = async () => {
+      if (!navigator.onLine) return;
+      
+      const queue = JSON.parse(localStorage.getItem("offlineScans") || "[]");
+      if (queue.length === 0) return;
+      
+      setIsSyncing(true);
+      let successCount = 0;
+      const failedQueue = [];
+      
+      for (const scan of queue) {
+         try {
+            await recordStudentScan({
+              studentId: scan.nisn,
+              schoolId: scan.schoolId as Id<"schools">,
+              classId: scan.classId as Id<"classes">,
+              subjectId: scan.subjectId as Id<"subjects">,
+              tanggal: new Date(scan.scannedAt).toISOString().split("T")[0],
+              jamKe: scan.jamKe ? parseInt(scan.jamKe) : undefined,
+              recordedByTeacherId: scan.recordedByTeacherId ? scan.recordedByTeacherId as Id<"teachers"> : undefined,
+            });
+            successCount++;
+         } catch (e) {
+            console.error("Failed to sync offline scan", e);
+            failedQueue.push(scan);
+         }
+      }
+      
+      localStorage.setItem("offlineScans", JSON.stringify(failedQueue));
+      setOfflineCount(failedQueue.length);
+      setIsSyncing(false);
+      
+      if (successCount > 0) {
+         toast.success(`${successCount} data absen offline berhasil disinkronisasi ke server!`);
+      }
+    };
+
+    const handleOnline = () => {
+      syncScans();
+      syncInterval = setInterval(syncScans, 15000); // Retry every 15s when online
+    };
+    
+    const handleOffline = () => {
+      if (syncInterval) clearInterval(syncInterval);
+    };
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    
+    if (navigator.onLine) {
+        handleOnline();
+    }
+
+    return () => {
+        window.removeEventListener('online', handleOnline);
+        window.removeEventListener('offline', handleOffline);
+        if (syncInterval) clearInterval(syncInterval);
+    };
+  }, [recordStudentScan]);
 
   // PIN verification
   const handlePinSubmit = useCallback(async () => {
@@ -169,6 +258,25 @@ export default function QrScannerPage() {
       } else if (mode === "siswa" && nisn) {
         // Record student attendance
         const today = new Date().toISOString().split("T")[0];
+        if (!navigator.onLine) {
+          // Offline Mode Queue
+          const currentQueue = JSON.parse(localStorage.getItem("offlineScans") || "[]");
+          currentQueue.push({
+            nisn,
+            scannedAt: Date.now(),
+            schoolId: schoolId,
+            classId: selectedClassId,
+            subjectId: selectedSubjectId,
+            jamKe: selectedJamKe,
+            recordedByTeacherId: selectedTeacherId,
+            type: "siswa"
+          });
+          localStorage.setItem("offlineScans", JSON.stringify(currentQueue));
+          setOfflineCount(currentQueue.length);
+          toast.success(`[OFFLINE] Kehadiran ${nisn} disimpan lokal!`);
+          return;
+        }
+
         const result = await recordStudentScan({
           studentId: nisn,
           schoolId: schoolId as Id<"schools">,
@@ -329,8 +437,14 @@ export default function QrScannerPage() {
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div className="flex-1">
-          <h2 className="text-white font-bold text-lg">
+          <h2 className="text-white font-bold text-lg flex items-center gap-2">
             {mode === "guru" ? "🟢 Absensi Guru" : "🔵 Absensi Siswa"}
+            {offlineCount > 0 && (
+               <Badge variant="outline" className="bg-amber-500/20 text-amber-300 border-amber-500/50 text-[10px] px-1.5 py-0">
+                  {isSyncing ? <Loader2 className="w-3 h-3 animate-spin mr-1"/> : <CloudUpload className="w-3 h-3 mr-1"/>}
+                  {offlineCount} Pending
+               </Badge>
+            )}
           </h2>
           <p className="text-white/50 text-xs">
             {scanning ? "Scanner aktif — arahkan ke QR Code" : "Konfigurasi scan"}

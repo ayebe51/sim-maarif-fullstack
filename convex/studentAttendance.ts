@@ -90,24 +90,35 @@ export const recordScan = mutation({
     const isNewHadir = !existingLog || !existingLog.logs?.[args.studentId] || existingLog.logs[args.studentId].status !== "Hadir";
 
     if (isNewHadir) {
-      const settings = await ctx.db
-        .query("attendanceSettings")
-        .withIndex("by_school", (q) => q.eq("schoolId", args.schoolId))
+      const student = await ctx.db
+        .query("students")
+        .withIndex("by_nisn", (q) => q.eq("nisn", args.studentId))
         .first();
 
-      if (settings && settings.gowaUrl) {
-        const student = await ctx.db
-          .query("students")
-          .withIndex("by_nisn", (q) => q.eq("nisn", args.studentId))
+      if (student && student.nomorTelepon) {
+        const classInfo = await ctx.db.get(args.classId);
+        const className = classInfo?.nama || "Kelas";
+        const schoolName = student.namaSekolah || "Madrasah";
+        
+        const message = `Alhamdulillah, ananda *${student.nama}* (${className}) telah sampai di *${schoolName}* pada pukul *${currentTime}*. 🙏`;
+
+        // SaaS GoWA Outbox Queue
+        await ctx.db.insert("wa_outbox", {
+            schoolId: args.schoolId,
+            targetNumber: student.nomorTelepon,
+            message: message,
+            status: "PENDING",
+            type: "ABSENSI",
+            createdAt: Date.now()
+        });
+
+        // Legacy inline sender logic
+        const settings = await ctx.db
+          .query("attendanceSettings")
+          .withIndex("by_school", (q) => q.eq("schoolId", args.schoolId))
           .first();
 
-        if (student && student.nomorTelepon) {
-          const classInfo = await ctx.db.get(args.classId);
-          const className = classInfo?.nama || "Kelas";
-          const schoolName = student.namaSekolah || "Madrasah";
-          
-          const message = `Alhamdulillah, ananda *${student.nama}* (${className}) telah sampai di *${schoolName}* pada pukul *${currentTime}*. 🙏`;
-
+        if (settings && settings.gowaUrl) {
           await ctx.scheduler.runAfter(0, api.sendWhatsApp.sendMessage, {
             gowaUrl: settings.gowaUrl,
             deviceId: settings.gowaDeviceId || undefined,

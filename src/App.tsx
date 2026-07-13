@@ -38,10 +38,20 @@ import ChangePasswordPage from "./features/auth/ChangePasswordPage"
 import DataAuditPage from '@/features/master-data/DataAuditPage';
 import StudentCardPage from "./features/kta/StudentCardPage"
 import { PengajuanNuptkPage } from "./features/sdm/PengajuanNuptkPage"
+import TargetsPage from "./features/tahfidz/TargetsPage"
+import RecordsPage from "./features/tahfidz/RecordsPage"
+import ReportsPage from "./features/tahfidz/ReportsPage"
 import { PersetujuanNuptkPage } from "./features/sdm/PersetujuanNuptkPage"
 import { Toaster } from "@/components/ui/sonner"
 import { ErrorBoundary } from "./components/ErrorBoundary"
 import { GlobalErrorBoundary } from "./components/common/GlobalErrorBoundary"
+import TeacherDashboardPage from "./features/dashboard/TeacherDashboardPage"
+import GuardianDashboardPage from "./features/dashboard/GuardianDashboardPage"
+import BillingDashboardPage from "./features/billing/BillingDashboardPage"
+import SppDashboardPage from "./features/finance/SppDashboardPage"
+import InputNilaiPage from "./features/akademik/InputNilaiPage"
+import PpdbLandingPage from "./features/ppdb/PpdbLandingPage"
+import PpdbAdminDashboard from "./features/ppdb/PpdbAdminDashboard"
 
 // Attendance Module
 import QrScannerPage from "./features/attendance/QrScannerPage"
@@ -62,6 +72,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/ppdb" element={<PpdbLandingPage />} />
           <Route path="/verify/:id" element={<PublicVerificationPage />} />
           <Route path="/verify/teacher/:nuptk" element={<VerifyTeacherPage />} />
           <Route path="/verify/student/:nisn" element={<VerifyStudentPage />} />
@@ -90,6 +101,9 @@ export default function App() {
                         <Route path="sk-revision" element={<SkRevisionListPage />} />
                         <Route path="generator" element={<SkGeneratorPage />} />
                         <Route path="audit" element={<DataAuditPage />} />
+                        <Route path="finance/spp" element={<SppDashboardPage />} />
+                        <Route path="ppdb" element={<PpdbAdminDashboard />} />
+                        <Route path="billing" element={<BillingDashboardPage />} />
                         <Route path="settings" element={<SettingsPage />} />
                         <Route path="change-password" element={<ChangePasswordPage />} />
                         <Route path="monitoring/headmasters" element={<HeadmasterExpiryPage />} />
@@ -112,6 +126,11 @@ export default function App() {
 
                         <Route path="mutations" element={<MutationPage />} />
 
+                        {/* Tahfidz Module */}
+                        <Route path="tahfidz/targets" element={<TargetsPage />} />
+                        <Route path="tahfidz/records" element={<RecordsPage />} />
+                        <Route path="tahfidz/reports" element={<ReportsPage />} />
+
                         {/* Attendance Module */}
                         <Route path="attendance/scanner" element={<QrScannerPage />} />
                         <Route path="attendance/teachers" element={<TeacherAttendancePage />} />
@@ -121,6 +140,42 @@ export default function App() {
                         <Route path="attendance/classes" element={<ClassesPage />} />
                         <Route path="attendance/schedule" element={<LessonSchedulePage />} />
                         <Route path="attendance/settings" element={<AttendanceSettingsPage />} />
+                      </Routes>
+                    </GlobalErrorBoundary>
+                  </AppShell>
+              </ProtectedLayout>
+            }
+          />
+
+          {/* Teacher Routes Wrapper */}
+          <Route
+            path="/teacher/*"
+            element={
+              <ProtectedLayout>
+                  <AppShell>
+                    <GlobalErrorBoundary>
+                      <Routes>
+                        <Route path="/" element={<TeacherDashboardPage />} />
+                        <Route path="attendance/scanner" element={<QrScannerPage />} />
+                        <Route path="tahfidz/records" element={<RecordsPage />} />
+                        <Route path="tahfidz/targets" element={<TargetsPage />} />
+                        <Route path="akademik/nilai" element={<InputNilaiPage />} />
+                      </Routes>
+                    </GlobalErrorBoundary>
+                  </AppShell>
+              </ProtectedLayout>
+            }
+          />
+
+          {/* Guardian Routes Wrapper */}
+          <Route
+            path="/guardian/*"
+            element={
+              <ProtectedLayout>
+                  <AppShell>
+                    <GlobalErrorBoundary>
+                      <Routes>
+                        <Route path="/" element={<GuardianDashboardPage />} />
                       </Routes>
                     </GlobalErrorBoundary>
                   </AppShell>

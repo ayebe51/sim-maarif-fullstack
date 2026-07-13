@@ -45,7 +45,14 @@ export default function LoginPage() {
         localStorage.setItem("user", JSON.stringify(data.user))
 
         toast.success("Login Berhasil!")
-        navigate("/dashboard")
+        
+        if (data.user.role === "teacher") {
+          navigate("/teacher")
+        } else if (data.user.role === "guardian") {
+          navigate("/guardian")
+        } else {
+          navigate("/dashboard")
+        }
     } catch (err: any) {
         console.error(err);
         toast.error(err.message || "Login Gagal! Username atau Password salah.")

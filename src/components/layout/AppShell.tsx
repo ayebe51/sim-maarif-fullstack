@@ -9,6 +9,7 @@ import {
   User,
   LogOut,
   Users,
+  UserPlus,
   AlertTriangle,
   FileBarChart,
   Trophy,
@@ -48,7 +49,7 @@ export default function AppShell({ children }: AppShellProps) {
   const isSuperAdmin = userRole === "super_admin";
 
   // Navigation Groups
-  const navGroups = [
+  let navGroups = [
     {
       title: "Master Data",
       items: [
@@ -59,51 +60,86 @@ export default function AppShell({ children }: AppShellProps) {
       ]
     },
     {
-      title: "Administrasi SK",
-      items: [
-        { label: "Generator SK", href: "/dashboard/generator", icon: FileText },
-        { label: "Pengajuan SK", href: "/dashboard/sk", icon: FileText },
-        { label: "Revisi Data SK", href: "/dashboard/sk-revision", icon: FileEdit },
-        { label: "Arsip SK Unit", href: "/dashboard/sk-saya", icon: FileText },
-
-        { label: "Laporan SK", href: "/dashboard/reports/sk", icon: FileBarChart },
-        { label: "Digital KTA", href: "/dashboard/kta", icon: CreditCard },
-        { label: "Kartu Pelajar", href: "/dashboard/student-card", icon: CreditCard },
-      ]
-    },
-    // Absensi group: only for Operators (Superadmin doesn't need it)
-    ...(!isSuperAdmin ? [{
       title: "Absensi",
       items: [
+        { label: "Scanner QR", href: "/dashboard/attendance/scanner", icon: ScanLine },
+        { label: "Kehadiran Guru", href: "/dashboard/attendance/teachers", icon: UserCheck },
+        { label: "Kehadiran Siswa", href: "/dashboard/attendance/students", icon: Users },
+        { label: "Laporan Kehadiran", href: "/dashboard/attendance/report", icon: FileBarChart },
         { label: "Mata Pelajaran", href: "/dashboard/attendance/subjects", icon: BookOpen },
         { label: "Kelas / Rombel", href: "/dashboard/attendance/classes", icon: School },
         { label: "Jadwal Jam", href: "/dashboard/attendance/schedule", icon: ClipboardList },
         { label: "Pengaturan Absensi", href: "/dashboard/attendance/settings", icon: Settings },
       ]
-    }] : []),
+    },
     {
-      title: "Manajemen SDM",
+      title: "Tahfidz",
       items: [
-        { label: "Pengajuan Kepala", href: "/dashboard/sk/headmaster/new", icon: Crown },
-        { label: "Mutasi Guru", href: "/dashboard/mutations", icon: ArrowRightLeft },
-        { label: "Monitoring Kepala", href: "/dashboard/monitoring/headmasters", icon: AlertTriangle },
-        { label: "Pengajuan NUPTK", href: "/dashboard/sdm/nuptk/pengajuan", icon: FileText },
-        { label: "Persetujuan NUPTK", href: "/dashboard/sdm/nuptk/persetujuan", icon: Gavel },
-        { label: "Laporan Guru", href: "/dashboard/reports", icon: FileBarChart },
+        { label: "Target Hafalan", href: "/dashboard/tahfidz/targets", icon: Trophy },
+        { label: "Setoran / Penilaian", href: "/dashboard/tahfidz/records", icon: FileEdit },
+        { label: "Laporan Tahfidz", href: "/dashboard/tahfidz/reports", icon: FileBarChart },
+      ]
+    },
+    {
+      title: "Kesiswaan & PPDB",
+      items: [
+        { label: "Pendaftar PPDB", href: "/dashboard/ppdb", icon: UserPlus },
+      ]
+    },
+    {
+      title: "Keuangan",
+      items: [
+        { label: "Manajemen SPP", href: "/dashboard/finance/spp", icon: CreditCard },
       ]
     },
     {
       title: "Administrasi Sistem",
       items: [
-        { label: "Approval Yayasan", href: "/dashboard/approval/yayasan", icon: Gavel },
         { label: "Manajemen User", href: "/dashboard/users", icon: Users },
-        { label: "Health Data", href: "/dashboard/audit", icon: Stethoscope },
-        { label: "Event / Lomba", href: "/dashboard/events", icon: Trophy },
+        { label: "Manajemen Billing", href: "/dashboard/billing", icon: CreditCard },
         { label: "Pengaturan", href: "/dashboard/settings", icon: Settings },
       ]
     }
-  ]
+  ];
 
+  if (userRole === "teacher") {
+     navGroups = [
+       {
+         title: "Utama",
+         items: [
+           { label: "Dashboard Guru", href: "/teacher", icon: LayoutDashboard },
+         ]
+       },
+       {
+         title: "Absensi",
+         items: [
+           { label: "Scanner QR Siswa", href: "/teacher/attendance/scanner", icon: ScanLine },
+         ]
+       },
+       {
+         title: "Tahfidz",
+         items: [
+           { label: "Setoran Hafalan", href: "/teacher/tahfidz/records", icon: FileEdit },
+           { label: "Target Capaian", href: "/teacher/tahfidz/targets", icon: Trophy },
+         ]
+       },
+       {
+         title: "Akademik & E-Rapor",
+         items: [
+           { label: "Input Nilai Siswa", href: "/teacher/akademik/nilai", icon: BookOpen },
+         ]
+       }
+     ];
+  } else if (userRole === "guardian") {
+     navGroups = [
+       {
+         title: "Utama",
+         items: [
+           { label: "Portal Wali Murid", href: "/guardian", icon: LayoutDashboard },
+         ]
+       }
+     ];
+   }
   return (
     <div className="flex h-screen w-full bg-slate-50 relative overflow-hidden print:block print:h-auto print:overflow-visible">
       {/* Subtle Background Glows */}
@@ -147,12 +183,11 @@ export default function AppShell({ children }: AppShellProps) {
                   }
 
                   // 2. YAYASAN & SUPER ADMIN EXCLUSIVE
-                  if (["Manajemen User", "Health Data", "Event / Lomba", "Generator SK", "Approval Yayasan", "Monitoring Kepala", "Persetujuan NUPTK", "Laporan Guru", "Laporan SK"].includes(item.label)) {
+                  if (["Manajemen User", "Manajemen Billing"].includes(item.label)) {
                       return ["super_admin", "admin_yayasan", "admin"].includes(userRole);
                   }
 
                  // 3. OPERATOR (DEFAULT)
-                 // Operator can see everything else (Master Data, New SK, My SK, etc)
                  return true;
               })
 

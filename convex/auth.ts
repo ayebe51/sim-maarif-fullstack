@@ -1,16 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
-import { createSession, validatePassword } from "./auth_helpers";
-
-// Simple password hashing (in production, use proper bcrypt or Convex Auth)
-function hashPassword(password: string): string {
-  // Simple hash for demo - in production use proper encryption
-  return btoa(password); // Base64 encoding using web API
-}
-
-function verifyPassword(password: string, hash: string): boolean {
-  return hashPassword(password) === hash;
-}
+import { createSession, validatePassword, generateSalt, hashPasswordWithSalt, verifyPasswordSecure } from "./auth_helpers";
 
 // Register new user
 export const register = mutation({
@@ -66,10 +56,14 @@ export const register = mutation({
         }
     }
 
+    const newSalt = generateSalt();
+    const newHash = await hashPasswordWithSalt(args.password, newSalt);
+
     const userId = await ctx.db.insert("users", {
       email: args.email,
       name: args.name,
-      passwordHash: hashPassword(args.password),
+      passwordHash: newHash,
+      passwordSalt: newSalt,
       role: args.role || "operator",
       unit: args.unit,
       schoolId: schoolId, // New field
@@ -99,8 +93,22 @@ export const login = mutation({
       throw new Error("Invalid credentials");
     }
     
-    // Verify password
-    if (!verifyPassword(args.password, user.passwordHash)) {
+    // Verify password with fallback for legacy accounts
+    let isMatch = false;
+    if (user.passwordSalt) {
+      isMatch = await verifyPasswordSecure(args.password, user.passwordSalt, user.passwordHash);
+    } else {
+      // Legacy fallback
+      isMatch = (btoa(args.password) === user.passwordHash);
+      if (isMatch) {
+        // Auto-migrate to secure hash
+        const newSalt = generateSalt();
+        const newHash = await hashPasswordWithSalt(args.password, newSalt);
+        await ctx.db.patch(user._id, { passwordSalt: newSalt, passwordHash: newHash });
+      }
+    }
+    
+    if (!isMatch) {
       throw new Error("Invalid credentials");
     }
     
@@ -121,6 +129,8 @@ export const login = mutation({
         role: user.role,
         unitKerja: user.unit, // Map to frontend format
         schoolId: user.schoolId, // New field for frontend context
+        teacherId: user.teacherId,
+        guardianId: user.guardianId,
       },
       token, 
     };
@@ -144,6 +154,8 @@ export const getCurrentUser = query({
       role: user.role,
       unitKerja: user.unit, // Map to frontend format
       schoolId: user.schoolId, // New field context
+      teacherId: user.teacherId,
+      guardianId: user.guardianId,
       isActive: user.isActive,
     };
   },
@@ -164,10 +176,14 @@ export const createDefaultAdmin = mutation({
     }
     
     // Create admin
+    const newSalt = generateSalt();
+    const newHash = await hashPasswordWithSalt("admin123", newSalt);
+
     const userId = await ctx.db.insert("users", {
       email: "admin@maarif.nu",
       name: "Admin Maarif",
-      passwordHash: hashPassword("admin123"),
+      passwordHash: newHash,
+      passwordSalt: newSalt,
       role: "super_admin",
       unit: undefined,
       isActive: true,
