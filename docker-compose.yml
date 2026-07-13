@@ -13,7 +13,6 @@ services:
     volumes:
       - convex_data:/convex_data
     restart: unless-stopped
-    command: ["--data-dir", "/convex_data"]
 
   # ========================================
   # 2. Web Frontend (Nginx + React)
