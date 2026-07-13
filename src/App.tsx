@@ -17,7 +17,6 @@ import EventsPage from "./features/events/EventsPage"
 import CreateEventPage from "./features/events/CreateEventPage"
 import EventDetailPage from "./features/events/EventDetailPage"
 import CompetitionDetailPage from "./features/events/CompetitionDetailPage"
-import YayasanApprovalPage from "./features/approval/YayasanApprovalPage"
 import PublicVerificationPage from "./features/verification/PublicVerificationPage"
 import VerifyTeacherPage from "./features/verification/VerifyTeacherPage"
 import VerifyStudentPage from "./features/verification/VerifyStudentPage"
@@ -96,7 +95,6 @@ export default function App() {
                         <Route path="events/new" element={<CreateEventPage />} />
                         <Route path="events/:id" element={<EventDetailPage />} />
                         <Route path="competitions/:competitionId" element={<CompetitionDetailPage />} />
-                        <Route path="approval/yayasan" element={<YayasanApprovalPage />} />
                         <Route path="sdm/nuptk/pengajuan" element={<PengajuanNuptkPage />} />
                         <Route path="sdm/nuptk/persetujuan" element={<PersetujuanNuptkPage />} />
 
