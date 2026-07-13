@@ -1,4 +1,38 @@
+version: "3.8"
+
 services:
+  # ========================================
+  # 1. Database & Backend Serverless (Convex Local)
+  # ========================================
+  convex-backend:
+    image: ghcr.io/getconvex/convex-local:latest
+    container_name: simmaci_convex
+    ports:
+      - "3210:3210" # API Port (Digunakan oleh Frontend)
+      - "3211:3211" # Dashboard Admin Port (Digunakan oleh Anda)
+    volumes:
+      - convex_data:/convex_data
+    restart: unless-stopped
+    command: ["--data-dir", "/convex_data"]
+
+  # ========================================
+  # 2. Web Frontend (Nginx + React)
+  # ========================================
+  frontend:
+    build:
+      context: .
+      args:
+        VITE_CONVEX_URL: "http://76.13.193.161:3210"
+    container_name: simmaci_frontend
+    ports:
+      - "80:80" # Akses Web Publik (Browser)
+    restart: unless-stopped
+    depends_on:
+      - convex-backend
+
+  # ========================================
+  # 3. WhatsApp Gateway (GoWA)
+  # ========================================
   gowa:
     image: aldinokemal2104/go-whatsapp-web-multidevice:latest
     container_name: gowa_whatsapp
@@ -17,3 +51,6 @@ services:
     depends_on:
       - gowa
     restart: unless-stopped
+
+volumes:
+  convex_data:
