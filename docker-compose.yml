@@ -8,8 +8,8 @@ services:
     image: ghcr.io/get-convex/convex-backend:latest
     container_name: simmaci_convex
     ports:
-      - "3210:3210" # API Port (Digunakan oleh Frontend)
-      - "3211:3211" # Dashboard Admin Port (Digunakan oleh Anda)
+      - "3212:3210" # API Port (Digunakan oleh Frontend)
+      - "3213:3211" # Dashboard Admin Port (Digunakan oleh Anda)
     volumes:
       - convex_data:/convex_data
     restart: unless-stopped
@@ -22,10 +22,10 @@ services:
     build:
       context: .
       args:
-        VITE_CONVEX_URL: "http://76.13.193.161:3210"
+        VITE_CONVEX_URL: "http://76.13.193.161:3212"
     container_name: simmaci_frontend
     ports:
-      - "80:80" # Akses Web Publik (Browser)
+      - "8085:80" # Akses Web Publik (Browser)
     restart: unless-stopped
     depends_on:
       - convex-backend
