@@ -12,6 +12,8 @@ services:
       - "3213:3211" # Dashboard Admin Port (Digunakan oleh Anda)
     volumes:
       - convex_data:/convex_data
+    environment:
+      - INSTANCE_SECRET=edusaas_admin_secret_2026
     restart: unless-stopped
 
   # ========================================
