@@ -1,3 +1,4 @@
+export const DUMMY_HASH = "force-new-upload-3";
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
